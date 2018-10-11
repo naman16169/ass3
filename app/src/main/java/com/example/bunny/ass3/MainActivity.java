@@ -1,11 +1,14 @@
 package com.example.bunny.ass3;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.io.DataOutputStream;
 import java.io.File;
@@ -35,9 +38,30 @@ public class MainActivity extends AppCompatActivity {
                     out.close();
                 } catch (IOException e) {
                 }
+                isConnected();
                 DSync dsync= (DSync) new DSync().execute("");
             }
 
         });
+    }
+    public  void isConnected()
+    {
+        ConnectivityManager connectivityManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (connectivityManager!=null)
+            Toast.makeText(getApplicationContext(), " Network Available", Toast.LENGTH_SHORT).show();
+        {
+            NetworkInfo info=connectivityManager.getActiveNetworkInfo();
+            if (info!=null && info.getState()==NetworkInfo.State.CONNECTED)
+            {
+
+                Toast.makeText(getApplicationContext(), " Network Connected", Toast.LENGTH_SHORT).show();
+                //  return true;
+
+            }else{
+                Toast.makeText(getApplicationContext(), "No Internet Connection", Toast.LENGTH_SHORT).show();
+            }
+        }
+        //  return false;
     }
 }
